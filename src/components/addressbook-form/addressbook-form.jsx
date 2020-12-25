@@ -3,6 +3,7 @@ import logo from '../../assets/icons/logo3.jpg'
 import cancelIcon from '../../assets/icons/cancel3.png'
 import '../addressbook-form/addressbook-form.scss'
 import { withRouter } from 'react-router-dom';
+import AddressbookService from '../../services/addressbook-service';
 
 const AddressbookForm = (props) => {
     
@@ -27,12 +28,13 @@ const AddressbookForm = (props) => {
             zipCode:'',
         }
     }
-
+    
+    let addressbookService = new AddressbookService();
+     
     const [formValue, setForm] = useState(initialValue);
 
     const changeValue = (event) => {
         setForm({...formValue, [event.target.name]: event.target.value});
-        console.log(formValue);
     }
 
     const save = async (event) => {
@@ -48,6 +50,14 @@ const AddressbookForm = (props) => {
                 zip: formValue.zipCode,
                 phoneNumber: formValue.phoneNumber,
             };
+
+            addressbookService.addPerson(object)
+            .then((data) => {
+                console.log("data added successfully");
+                props.history.push("");
+            }).catch(err =>{
+                console.log(err);
+            });
     }
 
     const reset = () =>{
@@ -78,7 +88,7 @@ const AddressbookForm = (props) => {
                     </div>
                     <div className="column">
                         <span className="label text">Full Name</span>
-                        <input type="text" className="input" name="fullname" id="fullname" value={formValue.name} onChange={changeValue} />
+                        <input type="text" className="input" name="name" id="name" onChange={changeValue} value={formValue.name} />
                     </div>
                     <div className="column">
                         <span className="label text">Phone Number</span>

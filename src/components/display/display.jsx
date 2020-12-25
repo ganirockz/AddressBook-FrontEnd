@@ -8,6 +8,24 @@ import editIcon from '../../assets/icons/create-black-18dp.svg'
 const Display = (props) => {
 
     const addressbookService = new AddressbookService();
+
+    const update = (id) => {
+        console.log(id);
+        props.history.push(`/addressbook/${id}`);
+    }
+
+    const remove = (id) => {
+        addressbookService.deletePerson(id)
+        .then((data) => {
+            window.location.reload();
+            console.log("data is deleted "+data);
+            props.getAllPersons();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
     return(
             <table className="display">
                 <tbody>
@@ -31,8 +49,8 @@ const Display = (props) => {
                             <td>{element.zip}</td>
                             <td>{element.phoneNumber}</td>
                             <td>
-                            <img src={deleteIcon} alt="delete"/>
-                                <img src={editIcon} alt="edit"/>
+                            <img src={deleteIcon} onClick={()=> remove(element.id)} alt="delete"/>
+                                <img src={editIcon} onClick={()=> update(element.id)} alt="edit"/>
                             </td>
                         </tr>
                         ))
