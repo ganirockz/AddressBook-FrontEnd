@@ -14,7 +14,6 @@ class Home extends React.Component{
             AllPersonArray: [],
         };
         this.addressbookService = new AddressbookService();
-        console.log(this.state.personArray);
     }
     
     componentDidMount(){

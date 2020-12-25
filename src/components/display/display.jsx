@@ -10,7 +10,6 @@ const Display = (props) => {
     const addressbookService = new AddressbookService();
 
     const update = (id) => {
-        console.log(id);
         props.history.push(`/addressbook/${id}`);
     }
 
@@ -18,7 +17,7 @@ const Display = (props) => {
         addressbookService.deletePerson(id)
         .then((data) => {
             window.location.reload();
-            console.log("data is deleted "+data);
+            alert(data.data+ "data is delete");
             props.getAllPersons();
         })
         .catch((err) => {

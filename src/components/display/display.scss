@@ -4,6 +4,7 @@ table{
     min-width: 800px;
     margin-top: 2%;
     tr{
+        margin-top: 1%;
         td,
         th{
             text-align: left;
@@ -20,6 +21,9 @@ table{
             font-weight: 500;
             border-radius: 3px 3px 0px 0px;
             border: 0px solid #dddddd;
+        }
+        td{
+            color: #3D3D3D;
         }
     }
     tr:not(:first-child) {
