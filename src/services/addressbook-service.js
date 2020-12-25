@@ -9,13 +9,13 @@ export default class AddressbookService{
     getAllPersons(){
         return AxiosService.getService(`${this.baseUrl}get`);
     }
-    getPerson(firstName){
-        return AxiosService.getService(`${this.baseUrl}get/${firstName}`);
+    getPerson(id){
+        return AxiosService.getService(`${this.baseUrl}get/${id}`);
     }
-    updateEmployee(data,firstName){
-        return AxiosService.putService(`${this.baseUrl}update/${firstName}`,data);
+    updatePerson(data,id){
+        return AxiosService.putService(`${this.baseUrl}update/${id}`,data);
     }
-    deleteEmployee(firstName){
-        return AxiosService.deleteService(`${this.baseUrl}delete/${firstName}`);
+    deletePerson(id){
+        return AxiosService.deleteService(`${this.baseUrl}delete/${id}`);
     }
 }
