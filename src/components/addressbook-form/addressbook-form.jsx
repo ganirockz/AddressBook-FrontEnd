@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import logo from '../../assets/icons/logo3.jpg'
 import cancelIcon from '../../assets/icons/cancel3.png'
 import '../addressbook-form/addressbook-form.scss'
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams} from 'react-router-dom';
 import AddressbookService from '../../services/addressbook-service';
 
 const AddressbookForm = (props) => {
     
     let initialValue = {
         name:'',
-        firstName: '',
-        lastName:'',
         phoneNumber:'',
         address:'',
         city:'',
@@ -29,8 +27,44 @@ const AddressbookForm = (props) => {
         }
     }
     
+    const params = useParams();
+    
+    useEffect(() => {
+        console.log(params);
+        if(params.id){
+            getDataById(params.id);
+        }
+    }, []);
+
     let addressbookService = new AddressbookService();
-     
+    
+    const getDataById = (id) =>{
+        addressbookService.getPerson(id)
+        .then((data) => {
+            console.log("data is "+data);
+            let obj = data.data;
+            setData(obj);
+        })
+        .catch( (err) => {
+            console.log("err is "+ err);
+        });
+    };
+
+    const setData = (obj) => {
+        let fullname = obj.firstName+" "+obj.lastName;
+        setForm({
+            ...formValue,
+            ...obj,
+            isUpdate : true,
+            name: fullname,
+            phoneNumber: obj.phoneNumber,
+            address: obj.address,
+            city: obj.city,
+            state: obj.state,
+            zipCode: obj.zip,
+        });
+    };
+
     const [formValue, setForm] = useState(initialValue);
 
     const changeValue = (event) => {
@@ -50,7 +84,19 @@ const AddressbookForm = (props) => {
                 zip: formValue.zipCode,
                 phoneNumber: formValue.phoneNumber,
             };
-
+            
+            if(formValue.isUpdate){
+                addressbookService.updatePerson(object,params.id)
+                .then(
+                    (data) => {
+                        alert("Data updated successfully!");
+                        props.history.push("");
+                    }
+                )
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }else{
             addressbookService.addPerson(object)
             .then((data) => {
                 console.log("data added successfully");
@@ -58,6 +104,7 @@ const AddressbookForm = (props) => {
             }).catch(err =>{
                 console.log(err);
             });
+        }
     }
 
     const reset = () =>{
